@@ -6,7 +6,6 @@ import {
   ScrollView,
   Text,
 } from 'react-native';
-import console = require('console');
 
 
 
@@ -28,7 +27,6 @@ export default class Home extends React.Component {
   }
 
   generateDataStructureCards = (props) => {
-    console.log(structure)
     return this.state.structures.map((structure, idx) => {
       return (
         <Card key={idx}>

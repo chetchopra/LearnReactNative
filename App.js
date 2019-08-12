@@ -1,6 +1,7 @@
 import React, { Fragment, Component } from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import Navigation from './navigation/index'
+import { Card, ListItem, Icon, Header } from 'react-native-elements'
 
 import {
   StyleSheet,
@@ -9,14 +10,8 @@ import {
   Button,
 } from 'react-native';
 
+import Login from './screens/Login'
 
-
-
-
-// Handles nav to Login Screen
-const navigateToLogin = () => {
-  console.log("Will try to move to Login")
-}
 
 
 
@@ -38,7 +33,10 @@ export default class App extends Component {
   }
 
   render() {
-    return (<Navigation structures={this.state.structures}/>)
+    return (
+        <Navigation structures={this.state.structures}/>
+    )
+    // return <Login/>
   }
 
 

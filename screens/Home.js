@@ -1,15 +1,22 @@
-import React from 'react';
-import { Card, ListItem, Button, Icon } from 'react-native-elements'
+import React, { Component } from 'react';
+import { Card, ListItem, Button, Icon, Header } from 'react-native-elements'
 
 import {
   StyleSheet,
   ScrollView,
   Text,
+  Image,
+  StatusBar,
 } from 'react-native';
 
 
 
-export default class Home extends React.Component {
+
+export default class Home extends Component {
+  static navigationOptions = {
+    title: 'Home',
+  };
+  
   constructor() {
     super();
     this.state = {
@@ -17,8 +24,8 @@ export default class Home extends React.Component {
     }
   }
 
-  navigateToCategoryView = (structure, props) => {
-    props.navigation.navigate('CategoryView', {sections: {
+  navigateToCategoryView = (structure) => {
+    this.props.navigation.navigate('CategoryView', {sections: {
                                                   learns: structure.learns,
                                                   questions: structure.questions,
                                                   whiteboards: structure.whiteboards
@@ -26,14 +33,14 @@ export default class Home extends React.Component {
     }})
   }
 
-  generateDataStructureCards = (props) => {
+  generateDataStructureCards = () => {
     return this.state.structures.map((structure, idx) => {
       return (
         <Card key={idx}>
           <Text>{structure.structure.structure_name}</Text>
           <Text>{structure.structure.structure_description}</Text>
           <Button title="Go"
-                onPress={() => {this.navigateToCategoryView(structure, props)}}
+                onPress={() => {this.navigateToCategoryView(structure, this.props)}}
         />
         </Card>
       )
@@ -50,7 +57,15 @@ export default class Home extends React.Component {
   render() {
     return (
       <ScrollView>
-        {this.generateDataStructureCards(this.props)}
+        {/* {this.state.structures.length < 1 ?
+          <Image
+          style={styles.stretch}
+          source={{uri: "https://media.giphy.com/media/TvLuZ00OIADoQ/giphy.gif"}}
+          />
+          : 
+          this.generateDataStructureCards(this.props)} */}
+          {this.generateDataStructureCards(this.props)}
+          
       </ScrollView>
     )
 
@@ -63,5 +78,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center'
   },
+  stretch: {
+    width: 50,
+    height: 200,
+    resizeMode: 'stretch'
+  },
 })
+
 

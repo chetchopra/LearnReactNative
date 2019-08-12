@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Button, Input, Divider } from 'react-native-elements'
+import {AsyncStorage, StatusBar} from 'react-native';
+
 
 import {
   StyleSheet,
@@ -7,6 +9,7 @@ import {
   Text,
   TextInput,
 } from 'react-native';
+
 
 
 
@@ -25,8 +28,29 @@ export default class Login extends Component {
     this.props.navigation.navigate('SignUp')
   }
 
-  navigateToHome = () => {
-    this.props.navigation.navigate('Home')
+  navigateToApp = () => {
+    this.props.navigation.navigate('App')
+  }
+
+  saveToLocalStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch (error) {
+      // Error saving data
+    }
+  }
+
+  checkLocalStorage = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        this.navigateToApp();
+        return true;
+      }
+    } catch (error) {
+      console.log("token not found")
+        return false;
+    }
   }
 
   login = () => {
@@ -48,18 +72,20 @@ export default class Login extends Component {
     fetch(url, configObj)
     .then(resp => resp.json())
     .then(json => {if (json.jwt) {
-      this.navigateToHome();
+      this.saveToLocalStorage(json.jwt);
+      this.navigateToApp();
     }})
   }
 
+  componentDidMount() {
+    this.checkLocalStorage()
+  }
 
-
-
-  
 
   render() {
     return (
       <View style={styles.container}>
+        
         <Text>Login Screen!</Text>
 
 

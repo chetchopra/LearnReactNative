@@ -14,61 +14,64 @@ import {
 
 
 export default function CategoryView(props) {
+  navigationOptions = {
+    title: 'Home',
+  };
   
   const { navigation } = props
 
-  const navigateToHome = (props, structure) => {
-    console.log(structure)
-    props.navigation.navigate('CategoryView', {title: structure.s.structure_name})
+
+  const navigateToLearnView = (content) => {
+    props.navigation.navigate('LearnView', {learns: content})
+  }
+
+  const navigateToQuestionView = (content) => {
+    props.navigation.navigate('QuestionView', {questions: content})
+  }
+
+  const navigateToWhiteboardView = (content) => {
+    props.navigation.navigate('WhiteboardView', {whiteboards: content})
   }
 
   const sections = navigation.getParam('sections', 'Default-Title')
 
-  const createCards = () => {
 
-    return Object.keys(sections).map((content) => {
-      if (sections[content] && sections[content].length > 0) {
-        return <Card key={content}>
-                  <Text>{content}</Text>
-                  <Button title="Go"/>
+  const generateCards = () => {
+    return Object.keys(sections).map((section) => {
+      if (sections[section] && sections[section].length > 0) {
+        console.log(sections[section])
+        return <Card key={section}>
+                  <Text>{section}</Text>
+                  {generateCardButton(section, sections[section])}
                 </Card>
       }
 
     })
-
-
-
-
-    // return sections.map((section) => {
-    //   if (section) {
-    //     if (section.learn_content) {
-    //       return <Card key={section.learn_content}>
-    //               <Text>Learn</Text>
-    //               <Button title="Go"
-    //                 // onPress={() => {this.navigateToHome(structure, props)}}
-    //               />
-    //             </Card>
-    //       return <Text key={section.learn_content}>{section.learn_content}</Text>
-    //     }
-
-    //     if (section.question_query) {
-    //       return <Text key={section.question_query}>{section.question_query}</Text>
-    //     }
-
-    //     if (section.whiteboard_name) {
-    //       return <Text key={section.whiteboard_name}>{section.whiteboard_name}</Text>
-    //     }
-    //   }
-
-    // })
-
   } 
+
+  const generateCardButton = (sectionTitle, content) => {
+    console.log(content)
+    switch(sectionTitle) {
+      case "learns":
+        return <Button title="Go Learn"
+                       onPress={() => {navigateToLearnView(content)}}/>
+
+      case "questions":
+        return <Button title="Go Question"
+                       onPress={() => {navigateToQuestionView(content)}}/>
+
+      case "whiteboards":
+        return <Button title="Go Whiteboard"
+                       onPress={() => {navigateToWhiteboardView(content)}}/>
+
+    }
+  }
   
 
   
   return (
     <ScrollView>
-      {createCards()}
+      {generateCards()}
     </ScrollView>
   )
 

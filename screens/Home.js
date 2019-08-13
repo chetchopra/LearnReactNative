@@ -25,6 +25,7 @@ export default class Home extends Component {
   }
 
   navigateToCategoryView = (structure) => {
+    console.log(structure)
     this.props.navigation.navigate('CategoryView', {sections: {
                                                   learns: structure.learns,
                                                   questions: structure.questions,

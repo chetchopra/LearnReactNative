@@ -39,7 +39,6 @@ export default function CategoryView(props) {
   const generateCards = () => {
     return Object.keys(sections).map((section) => {
       if (sections[section] && sections[section].length > 0) {
-        console.log(sections[section])
         return <Card key={section}>
                   <Text>{section}</Text>
                   {generateCardButton(section, sections[section])}
@@ -50,7 +49,6 @@ export default function CategoryView(props) {
   } 
 
   const generateCardButton = (sectionTitle, content) => {
-    console.log(content)
     switch(sectionTitle) {
       case "learns":
         return <Button title="Go Learn"

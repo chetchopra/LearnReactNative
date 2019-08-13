@@ -1,7 +1,8 @@
 import { createStackNavigator, createAppContainer, createSwitchNavigator } from 'react-navigation';
 
 
-import { Button, AsyncStorage } from 'react-native'
+import { Button } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import React from 'react'
 
@@ -25,8 +26,6 @@ removeToken = async () => {
     // DO something
   }
 };
-
-
 
 
 const appHeader = {defaultNavigationOptions : {

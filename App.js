@@ -1,7 +1,10 @@
 import React, { Fragment, Component } from 'react';
 import { createStackNavigator, createAppContainer } from 'react-navigation';
-import Navigation from './navigation/index'
+// import AppNavigation from './navigation/AppNavigation';
+// import AuthNavigation from './navigation/AuthNavigation';
+import Navigation from './navigation/index';
 import { Card, ListItem, Icon, Header } from 'react-native-elements'
+import AsyncStorage from '@react-native-community/async-storage'
 
 import {
   StyleSheet,
@@ -25,6 +28,17 @@ export default class App extends Component {
 
   }
 
+  // checkLocalStorage = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('token');
+  //     if (value !== null) {
+  //       return <AppNavigation structures={this.state.structures}/>;
+  //     }
+  //   } catch (error) {
+  //       return <AuthNavigation structures={this.state.structures}/>;
+  //   }
+  // }
+
   componentDidMount() {
     let url = "http://localhost:3000/structures"
     fetch(url)
@@ -32,9 +46,11 @@ export default class App extends Component {
     .then(json => this.setState({structures: json}))
   }
 
+
+
   render() {
     return (
-        <Navigation structures={this.state.structures}/>
+        <Navigation structres={this.state.structures}/>
     )
     // return <Login/>
   }

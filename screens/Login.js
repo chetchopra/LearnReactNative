@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Input, Divider } from 'react-native-elements'
-import {AsyncStorage, StatusBar} from 'react-native';
+import AsyncStorage from '@react-native-community/async-storage'
 
 
 import {

@@ -4,6 +4,9 @@ import {
   StyleSheets, 
   ScrollView, 
   Text,
+  TouchableOpacity,
+  TouchableHighlight,
+  View,
  } from 'react-native'
 
 import { 
@@ -19,23 +22,25 @@ export default function LearnView(props) {
 
   const learns = navigation.getParam('learns')
 
+  console.log(learns)
+
   const naviagteToLearn = (id) => {
     props.navigation.navigate('Learn', {learn_id: id})
   }
 
   const generateLearnCards = () => {
     return learns.map((learn, idx) => {
-      console.log(learn)
-      return <Card key={idx}>
-               <Text>{learn.learn_title}</Text>
-               <Text>{learn.learn_description}</Text>
-               <Button title="Go"
-                       onPress={() => naviagteToLearn(learn.id)}/>
-             </Card>
+      return <TouchableOpacity key={idx} 
+                               onPress={() => naviagteToLearn(learn.id)} 
+                               activeOpacity={0.6}>
+               <Card  containerStyle={{backgroundColor: 'gray'}}>
+                 <Text>{learn.learn_title}</Text>
+                 <Text>{learn.learn_description}</Text>
+               </Card>
+             </TouchableOpacity>
+             
     })
   }
-
-  
 
   
   return (
@@ -45,3 +50,4 @@ export default function LearnView(props) {
 
   )
 }
+

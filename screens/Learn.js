@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 
-import { Text } from 'react-native'
+import { ScrollView, Dimensions, Text, Image, } from 'react-native';
+
+import HTML from 'react-native-render-html';
+
 
 
 
@@ -28,8 +31,14 @@ export default class Learn extends Component{
 
 
   render() {
+    const htmlContent = `<html>${this.state.learnContent}</html>`;
+    const test = { h2: { textAlign: 'center', fontStyle: 'italic', color: 'grey' },
+                   div: {paddingLeft: '1%', paddingRight: '1%'},
+                   pre:  {backgroundColor: '#eee', border: '1px solid #999', display: 'flex', textAlign: 'center'}}
     return (
-      <Text>{this.state.learnContent}</Text>
+      <ScrollView>
+        <HTML html={htmlContent} imagesMaxWidth={Dimensions.get('window').width} tagsStyles={test}/>
+      </ScrollView>
     )
   }
 }

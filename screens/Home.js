@@ -9,6 +9,7 @@ import {
   Text,
   Image,
   StatusBar,
+  TouchableOpacity
 } from 'react-native';
 
 
@@ -32,20 +33,20 @@ export default class Home extends Component {
                                                   learns: structure.learns,
                                                   questions: structure.questions,
                                                   whiteboards: structure.whiteboards
-                                                  
-    }})
+                                                  },
+                                                   screenTitle : structure.structure_name
+                                                  })
   }
 
-  generateDataStructureCards = () => {
+  generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
       return (
-        <Card key={idx} onPress={() => console.log("clack")}>
+        <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}>
+        <Card >
           <Text>{structure.structure.structure_name}</Text>
           <Text>{structure.structure.structure_description}</Text>
-          <Button title="Go"
-                onPress={() => {this.navigateToCategoryView(structure, this.props)}}
-          />
         </Card>
+        </TouchableOpacity>
       )
     })
   }

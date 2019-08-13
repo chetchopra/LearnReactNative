@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 // import { Button } from 'react-native-elements'
 
 import { Card, ListItem, Button, Icon } from 'react-native-elements'
@@ -8,81 +8,56 @@ import {
   View,
   ScrollView,
   Text,
+  TouchableOpacity,
 } from 'react-native';
 
 
 
 
-export default function CategoryView(props) {
-  navigationOptions = {
-    title: 'Home',
-  };
-  
+export default function CategoryView (props) {
+
   const { navigation } = props
 
 
-  const navigateToLearnView = (content) => {
-    props.navigation.navigate('LearnView', {learns: content})
+
+  const determineNavigation = (content, sectionTitle) => {
+    switch(sectionTitle) {
+      case "learns":
+        return navigation.navigate('LearnView', {learns: content})
+      case "questions":
+        return navigation.navigate('QuestionView', {questions: content})
+      case "whiteboards":
+        return navigation.navigate('WhiteboardView', {whiteboards: content})
+    }
   }
-
-  const navigateToQuestionView = (content) => {
-    props.navigation.navigate('QuestionView', {questions: content})
-  }
-
-  const navigateToWhiteboardView = (content) => {
-    props.navigation.navigate('WhiteboardView', {whiteboards: content})
-  }
-
-  const sections = navigation.getParam('sections', 'Default-Title')
-
 
   const generateCards = () => {
+    let sections = navigation.getParam('sections', 'Default-Title')
     return Object.keys(sections).map((section) => {
       if (sections[section] && sections[section].length > 0) {
-        return <Card key={section}>
+        return <TouchableOpacity key={section} onPress={() => {determineNavigation(sections[section], section)}}>
+                <Card>
                   <Text>{section}</Text>
-                  {generateCardButton(section, sections[section])}
                 </Card>
+               </TouchableOpacity>
       }
 
     })
   } 
 
-  const generateCardButton = (sectionTitle, content) => {
-    switch(sectionTitle) {
-      case "learns":
-        return <Button title="Go Learn"
-                       onPress={() => {navigateToLearnView(content)}}/>
+  navigationOptions = () => {
+    return {
+      title: 'fdsahfkk',
+    };
+  };
 
-      case "questions":
-        return <Button title="Go Question"
-                       onPress={() => {navigateToQuestionView(content)}}/>
-
-      case "whiteboards":
-        return <Button title="Go Whiteboard"
-                       onPress={() => {navigateToWhiteboardView(content)}}/>
-
-    }
-  }
-  
-
-  
   return (
     <ScrollView>
       {generateCards()}
     </ScrollView>
   )
-
-
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-})
 
 
 

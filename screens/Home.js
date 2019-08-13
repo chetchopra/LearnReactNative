@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Card, ListItem, Button, Icon, Header } from 'react-native-elements'
 
+
+
 import {
   StyleSheet,
   ScrollView,
@@ -37,12 +39,12 @@ export default class Home extends Component {
   generateDataStructureCards = () => {
     return this.state.structures.map((structure, idx) => {
       return (
-        <Card key={idx}>
+        <Card key={idx} onPress={() => console.log("clack")}>
           <Text>{structure.structure.structure_name}</Text>
           <Text>{structure.structure.structure_description}</Text>
           <Button title="Go"
                 onPress={() => {this.navigateToCategoryView(structure, this.props)}}
-        />
+          />
         </Card>
       )
     })

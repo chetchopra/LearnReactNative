@@ -1,29 +1,35 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
-import {
-  StyleSheet,
-  View,
-  Text,
-} from 'react-native';
+import { Text } from 'react-native'
 
 
-export default class Learn extends Component {
+
+export default class Learn extends Component{
   constructor() {
     super();
-    this.state = {learns: this.props.learns}
+    this.state = {
+      learnContent: ""
+    }
+  }
+  
+ 
+
+  fetchLearnContent = () => {
+    const id = this.props.navigation.getParam('learn_id')
+    let url = `http://localhost:3000/learns/${id}`
+    fetch(url)
+    .then(resp => resp.json())
+    .then(json => this.setState({learnContent: json.learn_content}))
   }
 
-  generateLearnCards = () => {
-    return this.state.learns.map((learn) => {
-      return <Text>fdsj</Text>
-    })
+  componentDidMount() {
+    this.fetchLearnContent();
   }
+
 
   render() {
     return (
-      this.generateLearnCards()
+      <Text>{this.state.learnContent}</Text>
     )
   }
 }
-
-

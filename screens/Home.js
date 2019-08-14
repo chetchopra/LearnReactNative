@@ -1,23 +1,20 @@
 import React, { Component } from 'react';
-import { Card, ListItem, Button, Icon, Header } from 'react-native-elements'
-
-
 
 import {
-  StyleSheet,
   ScrollView,
   Text,
   Image,
-  StatusBar,
-  TouchableOpacity
+  TouchableOpacity,
 } from 'react-native';
 
-
+import { 
+  Card,
+} from 'native-base';
 
 
 export default class Home extends Component {
   static navigationOptions = {
-    title: 'Home',
+    title: 'Structures',
   };
   
   constructor() {
@@ -29,22 +26,27 @@ export default class Home extends Component {
 
   navigateToCategoryView = (structure) => {
     console.log(structure)
-    this.props.navigation.navigate('CategoryView', {sections: {
-                                                  learns: structure.learns,
-                                                  questions: structure.questions,
-                                                  whiteboards: structure.whiteboards
-                                                  },
-                                                   screenTitle : structure.structure_name
-                                                  })
+    this.props.navigation.navigate('CategoryView', 
+      {
+        sections: {
+          Learn: structure.learns,
+          Questions: structure.questions,
+          Whiteboarding: structure.whiteboards
+        },
+      screenTitle: structure.structure.structure_name
+      })
   }
 
   generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
       return (
-        <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}>
-        <Card >
-          <Text>{structure.structure.structure_name}</Text>
-          <Text>{structure.structure.structure_description}</Text>
+        <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}
+          activeOpacity={0.6}
+          style={styles.cardContainer}>
+        <Card style={styles.card}>
+          <Text style={styles.cardHeader}>{structure.structure.structure_name}</Text>
+          {/* <Text>{structure.structure.structure_description}</Text> */}
+          <Image source={require('./link.png')} style={{margin: 'auto'}}/>
         </Card>
         </TouchableOpacity>
       )
@@ -60,33 +62,30 @@ export default class Home extends Component {
   }
   render() {
     return (
-      <ScrollView>
-        {/* {this.state.structures.length < 1 ?
-          <Image
-          style={styles.stretch}
-          source={{uri: "https://media.giphy.com/media/TvLuZ00OIADoQ/giphy.gif"}}
-          />
-          : 
-          this.generateDataStructureCards(this.props)} */}
-          {this.generateDataStructureCards(this.props)}
-          
+      <ScrollView style={{backgroundColor: '#565656'}}>
+        {this.generateDataStructureCards(this.props)}     
       </ScrollView>
     )
-
   }
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+
+const styles = {
+  cardContainer: {
+    marginLeft: '2%',
+    marginRight: '2%'
   },
-  stretch: {
-    width: 50,
-    height: 200,
-    resizeMode: 'stretch'
+  card: {
+    borderRadius: 5, 
+    height: 100, 
+    backgroundColor: '#C09F80',
   },
-})
+  cardHeader: {
+    fontWeight: '300',
+    textAlign: 'center', 
+    paddingTop: '2%', 
+    fontSize: 25
+  }
+}
 
 

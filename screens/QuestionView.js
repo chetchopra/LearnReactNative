@@ -1,25 +1,35 @@
 import React from 'react'
 
 import { 
-  StyleSheets, 
   ScrollView, 
   Text,
+  Image
  } from 'react-native'
 
 import { 
   Card, 
-  ListItem, 
-  Button, 
-  Icon,
- } from 'react-native-elements'
+ } from 'native-base'
 
 export default function QuestionView() {
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#565656'}}>
       <Card>
-        <Text>fadhsfhjsldk</Text>
+        <Image source={{uri: "https://media.giphy.com/media/1XgIXQEzBu6ZWappVu/giphy.gif"}}
+        style={styles.image}/>
       </Card>
+      <Text style={styles.text}>I'm working on it. It'll be legit. I swear...</Text>
     </ScrollView>
-
   )
+}
+
+const styles = {
+  image: {
+    height: 400,
+    width: '100%',
+  },
+  text : {
+    fontSize: 30,
+    textAlign: 'center',
+    fontWeight: 300
+  }
 }

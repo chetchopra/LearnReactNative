@@ -3,10 +3,13 @@ import React, { Component } from 'react';
 import {
   StyleSheet,
   View,
-  Text,
-  TextInput,
-  Button
+  TextInput, 
 } from 'react-native';
+
+import {
+  Text,
+  Button,
+} from 'native-base';
 
 
 
@@ -20,6 +23,11 @@ export default class SignUp extends Component {
       email: "",
     }
   }
+
+  static navigationOptions = {
+    title: 'Sign Up',
+  };
+
 
 
   navigateToHome = () => {
@@ -64,22 +72,39 @@ export default class SignUp extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>Sign Up Here!</Text>
-        <TextInput 
-          placeholder="Email"
+
+
+
+
+        <Text style={styles.labelText}>Email</Text>
+        <TextInput
+          style={styles.signUpInput}
           onChangeText={(email) => this.setState({email})}
-          style={styles.signUpInput}/>
-        <TextInput 
-          placeholder="Enter a username"
+        />
+
+        <Text style={styles.labelText}>Username</Text>
+        <TextInput
+          style={styles.signUpInput}
           onChangeText={(username) => this.setState({username})}
-          style={styles.signUpInput}/>
-        <TextInput 
-          placeholder="Enter a password"
+        />
+
+        <Text style={styles.labelText}>Password</Text>
+        <TextInput
+          style={styles.signUpInput}
+          secureTextEntry={true}
           onChangeText={(password) => this.setState({password})}
-          style={styles.signUpInput}/>
-        <Button title="Sign Up"
-                onPress={this.signUp}
-                style={styles.signUpButton}/>
+        />
+
+        <Text style={styles.labelText}>Confirm Password</Text>
+        <TextInput
+          style={styles.signUpInput}
+          secureTextEntry={true}
+          // onChangeText={(password) => this.setState({password})}
+        />
+
+        <Button light onPress={this.signUp} style={styles.button}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </Button>
 
       </View>
     )
@@ -90,16 +115,37 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
+    backgroundColor: '#565656'
+  },
+  button: {
+    marginTop: 20,
+    fontWeight: '200',
+    fontSize: 18,
   },
   signUpButton: {
-    paddingTop: 20
+    marginTop: 20,
+  },
+  buttonText: {
+    fontWeight: '200'
   },
   signUpInput: {
     paddingTop: 10,
     height: 40,
-    width: 200,  
-    borderColor: 'gray', 
-    borderWidth: 1
+    width: 300,  
+    borderColor: 'white', 
+    borderWidth: 1,
+    borderRadius: 5,
+    fontSize: 20,
+    color: 'white',
+    fontWeight: '300',
+    textAlign: 'center',
+    paddingBottom: '1%'
+  },
+  labelText: {
+    color: 'white',
+    fontWeight: '200',
+    paddingTop: '2%',
+    fontSize: 18,
   }
 })

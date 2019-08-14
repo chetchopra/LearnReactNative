@@ -11,10 +11,7 @@ import {
 
 import { 
   Card, 
-  ListItem, 
-  Button, 
-  Icon,
- } from 'react-native-elements'
+ } from 'native-base';
 
 
 export default function LearnView(props) {
@@ -32,10 +29,11 @@ export default function LearnView(props) {
     return learns.map((learn, idx) => {
       return <TouchableOpacity key={idx} 
                                onPress={() => naviagteToLearn(learn.id)} 
-                               activeOpacity={0.6}>
-               <Card  containerStyle={{backgroundColor: 'gray'}}>
-                 <Text>{learn.learn_title}</Text>
-                 <Text>{learn.learn_description}</Text>
+                               activeOpacity={0.6}
+                               style={styles.cardContainer}>
+               <Card style={styles.card}>
+                 <Text style={styles.cardHeader}>{learn.learn_title}</Text>
+                 {/* <Text>{learn.learn_description}</Text> */}
                </Card>
              </TouchableOpacity>
              
@@ -44,10 +42,29 @@ export default function LearnView(props) {
 
   
   return (
-    <ScrollView>
+    <ScrollView style={{backgroundColor: '#565656'}}>
       {generateLearnCards()}
     </ScrollView>
-
   )
 }
+
+const styles = {
+  cardContainer: {
+    marginLeft: '2%',
+    marginRight: '2%'
+  },
+  card: {
+    borderRadius: 5, 
+    height: 100, 
+    backgroundColor: '#C09F80',
+    justifyContent: 'center',
+
+  },
+  cardHeader: {
+    fontWeight: '300',
+    textAlign: 'center', 
+    fontSize: 25
+  }
+}
+
 

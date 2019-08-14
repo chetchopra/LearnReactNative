@@ -1,15 +1,18 @@
 import React, { Component } from 'react';
-import { Button, Input, Divider } from 'react-native-elements'
 import AsyncStorage from '@react-native-community/async-storage'
 
 
 import {
   StyleSheet,
   View,
-  Text,
-  TextInput,
+  TextInput, 
+  Image
 } from 'react-native';
 
+import {
+  Text,
+  Button,
+} from 'native-base';
 
 
 
@@ -19,10 +22,12 @@ export default class Login extends Component {
     this.state = {
       username: "",
       password: "",
-      usernamePlaceholder: "Username",
-      passwordPlaceholder: "Password"
     }
   }
+
+  static navigationOptions = {
+    title: 'Login',
+  };
 
   navigateToSignUp = () => {
     this.props.navigation.navigate('SignUp')
@@ -85,57 +90,80 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Image source={{uri: 'https://media.giphy.com/media/BHNfhgU63qrks/giphy.gif'}} style={styles.appImage}/>
         
-        <Text>Login Screen!</Text>
-
-
+        <Text style={styles.labelText}>Username</Text>
         <TextInput
           style={styles.loginInput}
           onChangeText={(username) => this.setState({username})}
-          placeholder={this.state.usernamePlaceholder}
           value={this.state.username}
         />
 
 
-
+        <Text style={styles.labelText}>Password</Text>
         <TextInput
           style={styles.loginInput}
           onChangeText={(password) => this.setState({password})}
-          placeholder={this.state.passwordPlaceholder}
           value={this.state.password}
+          secureTextEntry={true}
         />
 
-        <Button title="Login"
-                onPress={this.login}
-                style={styles.loginButton}
-        />
+        <Button light onPress={this.login} style={styles.button}>
+          <Text style={styles.buttonText}>Login</Text>
+        </Button>
 
-        <Button title="Signup"
-                onPress={this.navigateToSignUp}
-                style={styles.loginButton}
-                />
+        <Button light onPress={this.navigateToSignUp} style={styles.button}>
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </Button>
       </View>
     )
   }
 
 
+
+
 };
 
 const styles = StyleSheet.create({
+  appImage: {
+    width: 300, 
+    height: 250, 
+    borderRadius: 5,
+    borderColor: 'white', 
+    borderWidth: 1,
+    marginBottom: 25, 
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+    paddingTop: '15%',
+    alignItems: 'center',
+    backgroundColor: '#565656'
   },
-  loginButton: {
-    paddingTop: 20
+  button: {
+    marginTop: 20,
+  },
+  buttonText: {
+    fontWeight: '200',
+    fontSize: 18,
   },
   loginInput: {
     paddingTop: 10,
     height: 40,
-    width: 200,  
-    borderColor: 'gray', 
-    borderWidth: 1
+    width: 300,  
+    borderColor: 'white', 
+    borderWidth: 1,
+    borderRadius: 5,
+    fontSize: 20,
+    color: 'white',
+    fontWeight: '300',
+    textAlign: 'center',
+    paddingBottom: '1%'
+  },
+  labelText: {
+    color: 'white',
+    fontWeight: '200',
+    paddingTop: '2%',
+    fontSize: 18,
   }
 })
 

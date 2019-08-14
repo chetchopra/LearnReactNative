@@ -33,23 +33,33 @@ removeToken = async () => {
 
 const appHeader = {defaultNavigationOptions : {
   headerStyle: {
-    backgroundColor: '#f4511e',
+    backgroundColor: '#76323F',
   },
   headerTintColor: '#fff',
   headerTitleStyle: {
-    fontWeight: 'bold',
+    fontWeight: '200',
+    fontSize: 25,
   },
   headerRight: (
     <Button
       onPress={removeToken}
       title="Logout"
       color="#fff"
+      style={{fontWeight: '200',}}
     />
   ),
 }}
 
-
-
+const authHeader = {defaultNavigationOptions : {
+  headerStyle: {
+    backgroundColor: '#76323F',
+  },
+  headerTintColor: '#fff',
+  headerTitleStyle: {
+    fontWeight: '200',
+    fontSize: 25,
+  },
+}}
 
 
 const AuthNavigator = createStackNavigator(
@@ -58,7 +68,8 @@ const AuthNavigator = createStackNavigator(
     SignUp: {screen: SignUp},
   },
   { 
-    initialRouteName: "Login"
+    initialRouteName: "Login",
+    ...authHeader
   }
 )
 
@@ -78,9 +89,6 @@ const MainNavigator = createStackNavigator(
     ...appHeader
   },
 );
-
-
-// const Navigation = createAppContainer(MainNavigator);
 
 const Navigation = createAppContainer(createSwitchNavigator(
   {

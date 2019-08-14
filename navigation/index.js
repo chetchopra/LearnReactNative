@@ -25,6 +25,7 @@ import Whiteboard from '../screens/Whiteboard';
 removeToken = async () => {
   try {
     await AsyncStorage.removeItem('token');
+
   } catch (error) {
     // DO something
   }
@@ -54,7 +55,7 @@ const authHeader = {defaultNavigationOptions : {
   headerStyle: {
     backgroundColor: '#76323F',
   },
-  headerTintColor: '#fff',
+  headerTintColor: '#000',
   headerTitleStyle: {
     fontWeight: '200',
     fontSize: 25,
@@ -99,6 +100,5 @@ const Navigation = createAppContainer(createSwitchNavigator(
     initialRouteName: "Auth"
   }
 ))
-
 
 export default Navigation;

@@ -54,8 +54,10 @@ export default class Learn extends Component{
 
 const styles = {
   loadingImage: {
-    height: 400, 
-    width: 300,
+    height: 350, 
+    width: 350,
     justifyContent: 'center',
+    marginLeft: '5%',
+    marginRight: '5%'
   }
 }

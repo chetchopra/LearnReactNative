@@ -6,9 +6,11 @@ export default class App extends Component {
   constructor() {
     super();
     this.state = {
-      structures: []
+      structures: [],
+      isLoggedIn: 1
     }
   }
+  
 
   componentDidMount() {
     let url = "http://localhost:3000/structures"
@@ -17,9 +19,13 @@ export default class App extends Component {
     .then(json => this.setState({structures: json}))
   }
 
+  changeState = () => {
+    this.setState({isLoggedIn: 10})
+  }
+
   render() {
     return (
-        <Navigation structres={this.state.structures}/>
+        <Navigation/>
     )
   }
 

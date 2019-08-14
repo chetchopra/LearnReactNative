@@ -12,6 +12,7 @@ import {
 } from 'native-base';
 
 
+
 export default class Home extends Component {
   static navigationOptions = {
     title: 'Structures',
@@ -25,7 +26,7 @@ export default class Home extends Component {
   }
 
   navigateToCategoryView = (structure) => {
-    console.log(structure)
+    // console.log(structure)
     this.props.navigation.navigate('CategoryView', 
       {
         sections: {
@@ -39,14 +40,16 @@ export default class Home extends Component {
 
   generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
+      console.log(structure)
       return (
         <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}
           activeOpacity={0.6}
           style={styles.cardContainer}>
         <Card style={styles.card}>
           <Text style={styles.cardHeader}>{structure.structure.structure_name}</Text>
-          {/* <Text>{structure.structure.structure_description}</Text> */}
-          <Image source={require('./link.png')} style={{margin: 'auto'}}/>
+          <Text style={styles.cardText}>{structure.structure.structure_description}</Text>
+          <Image source={{uri: structure.structure.structure_image}} 
+          style={{height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: '2%'}}/>
         </Card>
         </TouchableOpacity>
       )
@@ -73,18 +76,29 @@ export default class Home extends Component {
 const styles = {
   cardContainer: {
     marginLeft: '2%',
-    marginRight: '2%'
+    marginRight: '2%',
+    borderRadius: 5,
+    height: '18%',
+    marginBottom: '2%' 
+
   },
   card: {
-    borderRadius: 5, 
-    height: 100, 
+    height: '100%', 
     backgroundColor: '#C09F80',
+    borderColor: '#76323F', 
+    borderWidth: 1,
+    borderRadius: 5,
   },
   cardHeader: {
     fontWeight: '300',
     textAlign: 'center', 
     paddingTop: '2%', 
-    fontSize: 25
+    fontSize: 28
+  },
+  cardText: {
+    fontWeight: '200',
+    fontSize: 14,
+    textAlign: 'center', 
   }
 }
 

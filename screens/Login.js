@@ -90,7 +90,8 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image source={{uri: 'https://media.giphy.com/media/BHNfhgU63qrks/giphy.gif'}} style={styles.appImage}/>
+        <Image source={require('../assets/gifs/spacegif.gif')}  style={styles.appImage}/>
+
         
         <Text style={styles.labelText}>Username</Text>
         <TextInput

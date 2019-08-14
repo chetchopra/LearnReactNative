@@ -30,6 +30,6 @@ const styles = {
   text : {
     fontSize: 30,
     textAlign: 'center',
-    fontWeight: 300
+    fontWeight: '300',
   }
 }

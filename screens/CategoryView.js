@@ -4,8 +4,7 @@ import React, { Component } from 'react';
 import {ListItem, Button, Icon } from 'react-native-elements'
 
 import {
-  StyleSheet,
-  View,
+  Image,
   ScrollView,
   Text,
   TouchableOpacity,
@@ -42,6 +41,8 @@ export default class CategoryView extends Component {
                   >
                 <Card style={styles.card}>
                   <Text style={styles.cardHeader}>{section}</Text>
+                  <Image source={{uri: "http://icons.iconarchive.com/icons/graphicloads/colorful-long-shadow/128/Bulb-icon.png"}} 
+                  style={{margin: 'auto', height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}/>
                 </Card>
                </TouchableOpacity>
       }

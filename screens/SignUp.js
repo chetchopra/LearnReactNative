@@ -4,6 +4,7 @@ import {
   StyleSheet,
   View,
   TextInput, 
+  Image,
 } from 'react-native';
 
 import {
@@ -74,7 +75,9 @@ export default class SignUp extends Component {
       <View style={styles.container}>
 
 
-
+        <Text style={styles.standardText}>Please enter your information and desired credentials below so I can hack all of your other accounts and ruin your life.</Text>
+        
+        <Image source={{uri: "https://media.giphy.com/media/d2ZhMH5dkQtFo4Mw/giphy.gif"}} style={styles.image}/>
 
         <Text style={styles.labelText}>Email</Text>
         <TextInput
@@ -112,9 +115,16 @@ export default class SignUp extends Component {
 }
 
 const styles = StyleSheet.create({
+  image: {
+    width: 300, 
+    height: 250, 
+    borderRadius: 5,
+    borderColor: 'white', 
+    borderWidth: 1, 
+  },
   container: {
     flex: 1,
-    justifyContent: 'center',
+    paddingTop: '2%',
     alignItems: 'center',
     backgroundColor: '#565656'
   },
@@ -147,5 +157,15 @@ const styles = StyleSheet.create({
     fontWeight: '200',
     paddingTop: '2%',
     fontSize: 18,
+  },
+  standardText: {
+    color: 'white',
+    fontWeight: '200',
+    paddingTop: '2%',
+    fontSize: 20,
+    marginRight: '2%',
+    marginLeft: '2%',
+    textAlign: 'center',
+    paddingBottom: '5%'
   }
 })

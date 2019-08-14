@@ -31,7 +31,6 @@ removeToken = async () => {
   }
 };
 
-
 const appHeader = {defaultNavigationOptions : {
   headerStyle: {
     backgroundColor: '#76323F',

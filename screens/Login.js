@@ -90,6 +90,7 @@ export default class Login extends Component {
   render() {
     return (
       <View style={styles.container}>
+        <Text style={styles.labelText}>Time To Learn...</Text>
         <Image source={require('../assets/gifs/spacegif.gif')}  style={styles.appImage}/>
 
         

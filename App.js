@@ -7,7 +7,6 @@ export default class App extends Component {
     super();
     this.state = {
       structures: [],
-      isLoggedIn: 1
     }
   }
   
@@ -19,17 +18,11 @@ export default class App extends Component {
     .then(json => this.setState({structures: json}))
   }
 
-  changeState = () => {
-    this.setState({isLoggedIn: 10})
-  }
-
   render() {
     return (
-        <Navigation/>
+        <Navigation />
     )
   }
-
-
 };
 
 

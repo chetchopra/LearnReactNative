@@ -72,10 +72,10 @@ export default class SignUp extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.view}>
 
 
-        <Text style={styles.standardText}>Please enter your information and desired credentials below so I can hack all of your other accounts and ruin your life.</Text>
+        <Text style={styles.standardText}>Please enter your information and desired credentials.</Text>
         
         <Image source={{uri: "https://media.giphy.com/media/d2ZhMH5dkQtFo4Mw/giphy.gif"}} style={styles.image}/>
 
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor: 'white', 
     borderWidth: 1, 
   },
-  container: {
+  view: {
     flex: 1,
     paddingTop: '2%',
     alignItems: 'center',

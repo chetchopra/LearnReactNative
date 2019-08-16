@@ -1,12 +1,10 @@
 import React from 'react'
 
 import { 
-  StyleSheets, 
   ScrollView, 
   Text,
   TouchableOpacity,
-  TouchableHighlight,
-  View,
+  StyleSheet,
  } from 'react-native'
 
 import { 
@@ -48,7 +46,7 @@ export default function LearnView(props) {
   )
 }
 
-const styles = {
+const styles = StyleSheet.create({
   cardContainer: {
     marginLeft: '2%',
     marginRight: '2%'
@@ -65,6 +63,6 @@ const styles = {
     textAlign: 'center', 
     fontSize: 25
   }
-}
+})
 
 

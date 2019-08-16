@@ -31,8 +31,6 @@ export default class App extends Component {
   }
 
   
-  
-
   componentDidMount() {
     let url = "http://localhost:3000/structures"
     fetch(url)
@@ -40,16 +38,26 @@ export default class App extends Component {
     .then(json => this.setState({structures: json}))
   }
 
+
+  removeToken = async () => {
+    try {
+      await AsyncStorage.removeItem('token');
+      this.setState({isLoggedIn: 10})
+    } catch (error) {
+      // DO something
+    }
+  };
+
   render() {
 
-    removeToken = async () => {
-      try {
-        await AsyncStorage.removeItem('token');
-        this.setState({isLoggedIn: 10})
-      } catch (error) {
-        // DO something
-      }
-    };
+    // removeToken = async () => {
+    //   try {
+    //     await AsyncStorage.removeItem('token');
+    //     this.setState({isLoggedIn: 10})
+    //   } catch (error) {
+    //     // DO something
+    //   }
+    // };
     
     const appHeader = {defaultNavigationOptions : {
       headerStyle: {
@@ -62,7 +70,7 @@ export default class App extends Component {
       },
       headerRight: (
         <Button
-          onPress={removeToken}
+          onPress={this.removeToken}
           title="Logout"
           color="#fff"
           style={{fontWeight: '200',}}

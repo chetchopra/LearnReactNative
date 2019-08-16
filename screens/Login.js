@@ -89,7 +89,7 @@ export default class Login extends Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.view}>
         <Text style={styles.labelText}>Time To Learn...</Text>
         <Image source={require('../assets/gifs/spacegif.gif')}  style={styles.appImage}/>
 
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 25, 
   },
-  container: {
+  view: {
     flex: 1,
     paddingTop: '15%',
     alignItems: 'center',

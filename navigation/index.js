@@ -17,6 +17,7 @@ import WhiteboardView from '../screens/WhiteboardView'
 import Learn from '../screens/Learn'
 import Question from '../screens/Question'
 import Whiteboard from '../screens/Whiteboard';
+// import console = require('console');
 
 
 
@@ -31,43 +32,47 @@ removeToken = async () => {
   }
 };
 
-const appHeader = {defaultNavigationOptions : {
-  headerStyle: {
-    backgroundColor: '#76323F',
-  },
-  headerTintColor: '#fff',
-  headerTitleStyle: {
-    fontWeight: '200',
-    fontSize: 25,
-  },
-  headerRight: (
-    <Button
-      onPress={removeToken}
-      title="Logout"
-      color="#fff"
-      style={{fontWeight: '200',}}
-    />
-  ),
-}}
+const appHeader = {
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#76323F',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: '200',
+      fontSize: 25,
+    },
+    headerRight: (
+      <Button
+        onPress={removeToken}
+        title="Logout"
+        color="#fff"
+        style={{ fontWeight: '200', }}
+      />
+    ),
+  }
+}
 
-const authHeader = {defaultNavigationOptions : {
-  headerStyle: {
-    backgroundColor: '#76323F',
-  },
-  headerTintColor: '#000',
-  headerTitleStyle: {
-    fontWeight: '200',
-    fontSize: 25,
-  },
-}}
+const authHeader = {
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#76323F',
+    },
+    headerTintColor: '#000',
+    headerTitleStyle: {
+      fontWeight: '200',
+      fontSize: 25,
+    },
+  }
+}
 
 
 const AuthNavigator = createStackNavigator(
   {
-    Login: {screen: Login},
-    SignUp: {screen: SignUp},
+    Login: { screen: Login },
+    SignUp: { screen: SignUp },
   },
-  { 
+  {
     initialRouteName: "Login",
     ...authHeader
   }
@@ -75,16 +80,16 @@ const AuthNavigator = createStackNavigator(
 
 const MainNavigator = createStackNavigator(
   {
-    Home: {screen: Home},
-    CategoryView: {screen: CategoryView},
-    LearnView: {screen: LearnView},
-    QuestionView: {screen: QuestionView},
-    WhiteboardView: {screen: WhiteboardView},
-    Learn: {screen: Learn},
-    Question: {screen: Question},
-    Whiteboard: {screen: Whiteboard}
+    Home: { screen: Home },
+    CategoryView: { screen: CategoryView },
+    LearnView: { screen: LearnView },
+    QuestionView: { screen: QuestionView },
+    WhiteboardView: { screen: WhiteboardView },
+    Learn: { screen: Learn },
+    Question: { screen: Question },
+    Whiteboard: { screen: Whiteboard }
   },
-  { 
+  {
     initialRouteName: "Home",
     ...appHeader
   },

@@ -41,7 +41,7 @@ export default class Home extends Component {
 
   generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
-      // console.log(structure)
+      console.log(structure)
       return (
         <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}
           activeOpacity={0.6}

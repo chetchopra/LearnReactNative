@@ -4,8 +4,8 @@ import {
   ScrollView,
   Text,
   Image,
-  TouchableOpacity,
-  
+  TouchableOpacity, 
+  Button 
 } from 'react-native';
 
 import { 
@@ -15,10 +15,6 @@ import {
 
 
 export default class Home extends Component {
-  static navigationOptions = {
-    title: 'Structures',
-  };
-  
   constructor() {
     super();
     this.state = {
@@ -26,8 +22,11 @@ export default class Home extends Component {
     }
   }
 
+  static navigationOptions = {
+    title: 'Structures',
+  };
+
   navigateToCategoryView = (structure) => {
-    // console.log(structure)
     this.props.navigation.navigate('CategoryView', 
       {
         sections: {
@@ -41,7 +40,6 @@ export default class Home extends Component {
 
   generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
-      console.log(structure)
       return (
         <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}
           activeOpacity={0.6}

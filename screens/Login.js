@@ -45,18 +45,18 @@ export default class Login extends Component {
     }
   }
 
-  checkLocalStorage = async () => {
-    try {
-      const value = await AsyncStorage.getItem('token');
-      if (value !== null) {
-        this.navigateToApp();
-        return true;
-      }
-    } catch (error) {
-      console.log("token not found")
-        return false;
-    }
-  }
+  // checkLocalStorage = async () => {
+  //   try {
+  //     const value = await AsyncStorage.getItem('token');
+  //     if (value !== null) {
+  //       this.navigateToApp();
+  //       return true;
+  //     }
+  //   } catch (error) {
+  //     console.log("token not found")
+  //       return false;
+  //   }
+  // }
 
   login = () => {
     let url = "http://localhost:3000/login"
@@ -82,9 +82,9 @@ export default class Login extends Component {
     }})
   }
 
-  componentDidMount() {
-    this.checkLocalStorage()
-  }
+  // componentDidMount() {
+  //   this.checkLocalStorage()
+  // }
 
 
   render() {

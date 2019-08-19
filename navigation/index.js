@@ -44,7 +44,7 @@ const appHeader = {
     },
     headerRight: (
       <Button
-        onPress={removeToken}
+        onPress={this.removeToken}
         title="Logout"
         color="#fff"
         style={{ fontWeight: '200', }}

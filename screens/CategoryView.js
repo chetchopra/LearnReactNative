@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-// import { Button } from 'react-native-elements'
-
-import {ListItem, Button, Icon } from 'react-native-elements'
 
 import {
   Image,

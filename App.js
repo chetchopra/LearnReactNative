@@ -26,76 +26,81 @@ export default class App extends Component {
     super();
     this.state = {
       structures: [],
-      isLoggedIn: 1,
+      isLoggedIn: false,
     }
   }
 
-  
-  componentDidMount() {
-    let url = "http://localhost:3000/structures"
-    fetch(url)
-    .then(resp => resp.json())
-    .then(json => this.setState({structures: json}))
+  checkLocalStorage = async () => {
+    try {
+      const value = await AsyncStorage.getItem('token');
+      if (value !== null) {
+        // this.navigateToApp();
+        // return true;
+        this.setState({isLoggedIn: true})
+      }
+    } catch (error) {
+        // console.log("token not found")
+        // return false;
+        // return "Auth"
+        this.setState({isLoggedIn: false})
+    }
   }
-
 
   removeToken = async () => {
     try {
       await AsyncStorage.removeItem('token');
-      this.setState({isLoggedIn: 10})
+      this.setState({isLoggedIn: false})
     } catch (error) {
       // DO something
     }
   };
 
-  render() {
+  componentDidMount() {
+    this.checkLocalStorage()
+  }
 
-    // removeToken = async () => {
-    //   try {
-    //     await AsyncStorage.removeItem('token');
-    //     this.setState({isLoggedIn: 10})
-    //   } catch (error) {
-    //     // DO something
-    //   }
-    // };
+  render() {
+    const appHeader = {
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: '#76323F',
+        },
+        headerTintColor: '#fff',
+        headerTitleStyle: {
+          fontWeight: '200',
+          fontSize: 25,
+        },
+        headerRight: (
+          <Button
+            onPress={this.removeToken}
+            title="Logout"
+            color="#fff"
+            style={{ fontWeight: '200', }}
+          />
+        ),
+      }
+    }
     
-    const appHeader = {defaultNavigationOptions : {
-      headerStyle: {
-        backgroundColor: '#76323F',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        fontWeight: '200',
-        fontSize: 25,
-      },
-      headerRight: (
-        <Button
-          onPress={this.removeToken}
-          title="Logout"
-          color="#fff"
-          style={{fontWeight: '200',}}
-        />
-      ),
-    }}
-    
-    const authHeader = {defaultNavigationOptions : {
-      headerStyle: {
-        backgroundColor: '#76323F',
-      },
-      headerTintColor: '#000',
-      headerTitleStyle: {
-        fontWeight: '200',
-        fontSize: 25,
-      },
-    }}
+    const authHeader = {
+      defaultNavigationOptions: {
+        headerStyle: {
+          backgroundColor: '#76323F',
+        },
+        headerTintColor: '#000',
+        headerTitleStyle: {
+          fontWeight: '200',
+          fontSize: 25,
+        },
+      }
+    }
     
     
     const AuthNavigator = createStackNavigator(
       {
-        Login: {screen: Login},
-        SignUp: {screen: SignUp},
+        Login: { screen: Login },
+        SignUp: { screen: SignUp },
       },
-      { 
+      {
         initialRouteName: "Login",
         ...authHeader
       }
@@ -103,22 +108,32 @@ export default class App extends Component {
     
     const MainNavigator = createStackNavigator(
       {
-        Home: {screen: Home},
-        CategoryView: {screen: CategoryView},
-        LearnView: {screen: LearnView},
-        QuestionView: {screen: QuestionView},
-        WhiteboardView: {screen: WhiteboardView},
-        Learn: {screen: Learn},
-        Question: {screen: Question},
-        Whiteboard: {screen: Whiteboard}
+        Home: { screen: Home },
+        CategoryView: { screen: CategoryView },
+        LearnView: { screen: LearnView },
+        QuestionView: { screen: QuestionView },
+        WhiteboardView: { screen: WhiteboardView },
+        Learn: { screen: Learn },
+        Question: { screen: Question },
+        Whiteboard: { screen: Whiteboard }
       },
-      { 
+      {
         initialRouteName: "Home",
         ...appHeader
       },
     );
     
-    const Navigation = createAppContainer(createSwitchNavigator(
+    const Navigation = this.state.isLoggedIn ? createAppContainer(createSwitchNavigator(
+      {
+        App: MainNavigator,
+        Auth: AuthNavigator
+      },
+      {
+        initialRouteName: "App"
+      }
+    )) 
+    :
+    createAppContainer(createSwitchNavigator(
       {
         App: MainNavigator,
         Auth: AuthNavigator
@@ -128,7 +143,11 @@ export default class App extends Component {
       }
     ))
 
+    // const Navigation = createAppContainer(AuthNavigator)
+
+
     return (
+      
         <Navigation/>
     )
   }

@@ -18,14 +18,19 @@ export default function QuestionView(props) {
 
   console.log(questions)
 
-  const naviagteToQuestion = (id) => {
-    props.navigation.navigate('Question', {question_id: id})
+  const naviagteToQuestion = (idx, questionIds) => {
+    props.navigation.navigate('Question', {questionIndex: idx, questionIds: questionIds})
   }
 
   const generateQuestionCards = () => {
+    let questionIds = []
     return questions.map((question, idx) => {
+
+      questionIds.push(question.id);
+      console.log(questionIds)
+
       return <TouchableOpacity key={idx} 
-                               onPress={() => naviagteToQuestion(question.id)} 
+                               onPress={() => naviagteToQuestion(idx, questionIds)} 
                                activeOpacity={0.6}
                                style={styles.cardContainer}>
                <Card style={styles.card}>

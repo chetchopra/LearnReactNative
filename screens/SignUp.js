@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import AsyncStorage from '@react-native-community/async-storage'
+
 import {
   StyleSheet,
   View,
@@ -19,28 +21,45 @@ export default class SignUp extends Component {
   constructor() {
     super();
     this.state = {
+      email: "",
       username: "",
       password: "",
-      email: "",
+      confirmPassword: "",
+      
     }
   }
+
+
 
   static navigationOptions = {
     title: 'Sign Up',
   };
 
 
+  saveToLocalStorage = async (token) => {
+    try {
+      await AsyncStorage.setItem('token', token);
+    } catch (error) {
+      // Error saving data
+    }
+  }
 
   navigateToHome = () => {
     this.props.navigation.navigate('Home')
   }
 
+  verifyInfo = () => {
+    if (this.state.password !== this.state.confirmPassword) {
+      alert("fydsuialfyidsu")
+    } 
+  }
+
   verifySignUp = (data) => {
     if (data.jwt) {
-      console.log(data)
+      this.saveToLocalStorage(data.jwt)
       this.navigateToHome()
     } else {
-      console.log(data)
+      // DO  SOMETHING 
     }
   }
 
@@ -65,10 +84,6 @@ export default class SignUp extends Component {
     .then(json => {this.verifySignUp(json)})
 
   }
-
-  
-
-
 
   render() {
     return (
@@ -102,7 +117,7 @@ export default class SignUp extends Component {
         <TextInput
           style={styles.signUpInput}
           secureTextEntry={true}
-          // onChangeText={(password) => this.setState({password})}
+          onChangeText={(confirmPassword) => this.setState({confirmPassword})}
         />
 
         <Button light onPress={this.signUp} style={styles.button}>

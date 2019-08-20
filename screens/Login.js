@@ -16,6 +16,7 @@ import {
 
 
 
+
 export default class Login extends Component {
   constructor() {
     super();
@@ -33,8 +34,8 @@ export default class Login extends Component {
     this.props.navigation.navigate('SignUp')
   }
 
-  navigateToApp = () => {
-    this.props.navigation.navigate('App')
+  navigateToApp = (token) => {
+    this.props.navigation.navigate('Home', {token: token})
   }
 
   saveToLocalStorage = async (token) => {
@@ -44,19 +45,6 @@ export default class Login extends Component {
       // Error saving data
     }
   }
-
-  // checkLocalStorage = async () => {
-  //   try {
-  //     const value = await AsyncStorage.getItem('token');
-  //     if (value !== null) {
-  //       this.navigateToApp();
-  //       return true;
-  //     }
-  //   } catch (error) {
-  //     console.log("token not found")
-  //       return false;
-  //   }
-  // }
 
   login = () => {
     let url = "http://localhost:3000/login"
@@ -77,15 +65,11 @@ export default class Login extends Component {
     fetch(url, configObj)
     .then(resp => resp.json())
     .then(json => {if (json.jwt) {
+      console.log(json)
       this.saveToLocalStorage(json.jwt);
-      this.navigateToApp();
+      this.navigateToApp(json.jwt);
     }})
   }
-
-  // componentDidMount() {
-  //   this.checkLocalStorage()
-  // }
-
 
   render() {
     return (

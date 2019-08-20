@@ -34,14 +34,6 @@ export default class Question extends Component{
   static navigationOptions = ({navigation}) => {
     return{
       headerLeft:(<HeaderBackButton onPress={()=>{navigation.navigate('QuestionView')}}/>),
-      headerRight: (
-        <Button
-          //onPress={removeToken}
-          title="Logout"
-          color="#fff"
-          style={{ fontWeight: '200', }}
-        />
-      ),
    }
   }
 

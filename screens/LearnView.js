@@ -17,8 +17,6 @@ export default function LearnView(props) {
 
   const learns = navigation.getParam('learns')
 
-  console.log(learns)
-
   const naviagteToLearn = (id) => {
     props.navigation.navigate('Learn', {learn_id: id})
   }

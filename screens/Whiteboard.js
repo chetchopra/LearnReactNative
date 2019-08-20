@@ -4,6 +4,7 @@ import { Text } from 'react-native'
 
 
 
+
 export default class Whiteboard extends Component{
   render() {
     return (

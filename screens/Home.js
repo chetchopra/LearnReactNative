@@ -13,18 +13,25 @@ import {
 } from 'native-base';
 
 
-
 export default class Home extends Component {
-  constructor() {
+  constructor(props) {
     super();
     this.state = {
-      structures: []
+      structures: [],
+      usertoken: props.navigation.getParam('token'),
+      userInfo: null,
+      userCompletion: null
     }
   }
 
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => {
+    return {
     title: 'Structures',
-  };
+    headerRight: (
+      <Button title={"Open"} onPress={navigation.openDrawer}/>
+    ),
+  }};
+  
 
   navigateToCategoryView = (structure) => {
     this.props.navigation.navigate('CategoryView', 
@@ -49,23 +56,53 @@ export default class Home extends Component {
           <Text style={styles.cardText}>{structure.structure.structure_description}</Text>
           <Image source={{uri: structure.structure.structure_image}} 
           style={{height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: '2%'}}/>
+          <Text>{this.calculateCompleted(structure.structure)}</Text>
         </Card>
         </TouchableOpacity>
       )
     })
   }
 
+  calculateCompleted = (structure) => {
+    if (this.state.userCompletion) {
+      // console.log(structure.structure_name, this.state.userCompletion[`${structure.structure_name}`])
+      return (this.state.userCompletion[`${structure.structure_name}`].learns.completed.length) / (this.state.userCompletion[`${structure.structure_name}`].learns.total)
+    }
+    return "not here yet"
+  }
+
   componentDidMount() {
+    this.fetchStructures();
+    this.fetchUser();
+  }
+
+  fetchUser = () => {
+    let url = "http://localhost:3000/profile"
+    let configObj = {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${this.state.usertoken}`
+      }
+    }
+
+    fetch(url, configObj)
+    .then(resp => resp.json())
+    .then(json => {this.setState({userInfo: json.user.userInfo, userCompletion: json.user.completion})})
+  }
+
+  fetchStructures = () => {
     let url = "http://localhost:3000/structures"
     fetch(url)
     .then(resp => resp.json())
     .then(json => this.setState({structures: json}))
-
   }
+
   render() {
+    console.log(this.state.userCompletion)
     return (
+      
       <ScrollView style={{backgroundColor: '#565656'}}>
-        {this.generateDataStructureCards(this.props)}     
+        {this.generateDataStructureCards(this.props)}   
       </ScrollView>
     )
   }

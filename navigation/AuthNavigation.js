@@ -5,16 +5,29 @@ import Login from '../screens/Login'
 
 
 
-const AuthNavigator = createStackNavigator(
+const authHeader = {
+  defaultNavigationOptions: {
+    headerStyle: {
+      backgroundColor: '#76323F',
+    },
+    headerTintColor: '#000',
+    headerTitleStyle: {
+      fontWeight: '200',
+      fontSize: 25,
+    },
+  }
+}
+
+
+const AuthNavigation = createStackNavigator(
   {
-    Login: {screen: Login},
-    SignUp: {screen: SignUp},
+    Login: { screen: Login },
+    SignUp: { screen: SignUp },
   },
-  { 
-    initialRouteName: "Login"
+  {
+    initialRouteName: "Login",
+    ...authHeader
   }
 )
-
-const AuthNavigation = createAppContainer(AuthNavigator);
 
 export default AuthNavigation;

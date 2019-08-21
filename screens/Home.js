@@ -5,12 +5,15 @@ import {
   Text,
   Image,
   TouchableOpacity, 
-  Button 
+  // Button 
 } from 'react-native';
 
 import { 
   Card,
+  Button, 
+  Icon
 } from 'native-base';
+
 
 
 export default class Home extends Component {
@@ -20,7 +23,7 @@ export default class Home extends Component {
       structures: [],
       usertoken: props.navigation.getParam('token'),
       userInfo: null,
-      userCompletion: null
+      userCompletion: props.navigation.getParam('progress'),
     }
   }
 
@@ -28,7 +31,9 @@ export default class Home extends Component {
     return {
     title: 'Structures',
     headerRight: (
-      <Button title={"Open"} onPress={navigation.openDrawer}/>
+      <Button transparent onPress={navigation.openDrawer}>
+        <Icon style={{color: 'black'}} name='cog'/>
+      </Button>
     ),
   }};
   
@@ -48,7 +53,7 @@ export default class Home extends Component {
   generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
       return (
-        <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure, this.props)}}
+        <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure)}}
           activeOpacity={0.6}
           style={styles.cardContainer}>
         <Card style={styles.card}>
@@ -56,39 +61,46 @@ export default class Home extends Component {
           <Text style={styles.cardText}>{structure.structure.structure_description}</Text>
           <Image source={{uri: structure.structure.structure_image}} 
           style={{height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: '2%'}}/>
-          <Text>{this.calculateCompleted(structure.structure)}</Text>
+          <Text>{this.calculateCompleted(structure)}</Text>
         </Card>
         </TouchableOpacity>
-      )
+      ) 
     })
   }
 
   calculateCompleted = (structure) => {
+    console.log(this.state.userCompletion)
     if (this.state.userCompletion) {
-      // console.log(structure.structure_name, this.state.userCompletion[`${structure.structure_name}`])
-      return (this.state.userCompletion[`${structure.structure_name}`].learns.completed.length) / (this.state.userCompletion[`${structure.structure_name}`].learns.total)
+      let completedLearns = this.state.userCompletion[`${structure.structure.structure_name}`].learns.completed.length;
+      let totalLearns = structure.learns.length
+      let completedQuestions = this.state.userCompletion[`${structure.structure.structure_name}`].questions.completed.length;
+      let totalQuestions = structure.questions.length
+      let completedWhiteboards = this.state.userCompletion[`${structure.structure.structure_name}`].whiteboards.completed.length;
+      let totalWhiteboards = structure.whiteboards.length
+      return `Learns: ${completedLearns} out of ${totalLearns} | Questions: ${completedQuestions} out of ${totalQuestions} | Whiteboards: ${completedWhiteboards} out of ${totalWhiteboards}`
+      // return (this.state.userCompletion[`${structure.structure_name}`].learns.completed.length) / (this.state.userCompletion[`${structure.structure_name}`].learns.total)
     }
     return "not here yet"
   }
 
   componentDidMount() {
     this.fetchStructures();
-    this.fetchUser();
+    // this.fetchUser();
   }
 
-  fetchUser = () => {
-    let url = "http://localhost:3000/profile"
-    let configObj = {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${this.state.usertoken}`
-      }
-    }
+  // fetchUser = () => {
+  //   let url = "http://localhost:3000/profile"
+  //   let configObj = {
+  //     method: 'GET',
+  //     headers: {
+  //       Authorization: `Bearer ${this.state.usertoken}`
+  //     }
+  //   }
 
-    fetch(url, configObj)
-    .then(resp => resp.json())
-    .then(json => {this.setState({userInfo: json.user.userInfo, userCompletion: json.user.completion})})
-  }
+  //   fetch(url, configObj)
+  //   .then(resp => resp.json())
+  //   .then(json => {this.setState({userInfo: json.user.userInfo, userCompletion: json.user.completion})})
+  // }
 
   fetchStructures = () => {
     let url = "http://localhost:3000/structures"
@@ -108,7 +120,6 @@ export default class Home extends Component {
   }
 };
 
-
 const styles = {
   cardContainer: {
     marginLeft: '2%',
@@ -116,7 +127,6 @@ const styles = {
     borderRadius: 5,
     height: '18%',
     marginBottom: '2%' 
-
   },
   card: {
     height: '100%', 

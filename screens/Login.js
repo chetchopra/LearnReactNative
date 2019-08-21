@@ -34,8 +34,9 @@ export default class Login extends Component {
     this.props.navigation.navigate('SignUp')
   }
 
-  navigateToApp = (token) => {
-    this.props.navigation.navigate('Home', {token: token})
+  navigateToApp = (data) => {
+    // console.log(data.userProgress)
+    this.props.navigation.navigate('Home', {token: data.jwt, user: data.user, progress: data.userProgress.completion})
   }
 
   saveToLocalStorage = async (token) => {
@@ -67,7 +68,9 @@ export default class Login extends Component {
     .then(json => {if (json.jwt) {
       console.log(json)
       this.saveToLocalStorage(json.jwt);
-      this.navigateToApp(json.jwt);
+      this.navigateToApp(json);
+    } else {
+      console.log(json)
     }})
   }
 

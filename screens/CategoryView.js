@@ -8,13 +8,26 @@ import {
 } from 'react-native';
 
 import {
-  Card
+  Card,
+  Button,
+  Icon
 } from 'native-base';
 
 
 
 
 export default class CategoryView extends Component {
+  
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('screenTitle', 'Structure Screen'),
+      headerRight: (
+        <Button transparent onPress={navigation.openDrawer}>
+          <Icon style={{color: 'black'}} name='cog'/>
+        </Button>
+    ),
+  }};
+
   determineNavigation = (content, sectionTitle) => {
     let { navigation } = this.props
     switch(sectionTitle) {
@@ -26,6 +39,7 @@ export default class CategoryView extends Component {
         return navigation.navigate('WhiteboardView', {whiteboards: content})
     }
   }
+
 
   generateCards = () => {
     let { navigation } = this.props
@@ -46,12 +60,6 @@ export default class CategoryView extends Component {
 
     })
   } 
-
-  static navigationOptions = ({ navigation }) => {
-    return {
-      title: navigation.getParam('screenTitle', 'Structure Screen'),
-    };
-  };
 
   render() {
     return (

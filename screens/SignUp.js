@@ -44,22 +44,32 @@ export default class SignUp extends Component {
     }
   }
 
-  navigateToHome = () => {
-    this.props.navigation.navigate('Home')
+  navigateToApp = (data) => {
+    this.props.navigation.navigate('Home', {token: data.jwt, user: data.user, progress: data.userProgress.completion})
   }
 
+  // MOVE THIS SHIT TO THE BACKEND
+
   verifyInfo = () => {
-    if (this.state.password !== this.state.confirmPassword) {
-      alert("fydsuialfyidsu")
-    } 
+    if (this.state.email.trim() === "") {
+      alert("Email required!")
+    } else if (this.state.username.trim() === "") {
+      alert("Username required!")
+    } else if (this.state.password.trim() === "") {
+      alert("Password required!")
+    } else if (this.state.password !== this.state.confirmPassword) {
+      alert("Password and conform password must match!")
+    } else {
+      this.signUp()
+    }
   }
 
   verifySignUp = (data) => {
     if (data.jwt) {
       this.saveToLocalStorage(data.jwt)
-      this.navigateToHome()
+      this.navigateToApp(data)
     } else {
-      // DO  SOMETHING 
+      alert(`${data.error}`) 
     }
   }
 
@@ -120,7 +130,7 @@ export default class SignUp extends Component {
           onChangeText={(confirmPassword) => this.setState({confirmPassword})}
         />
 
-        <Button light onPress={this.signUp} style={styles.button}>
+        <Button light onPress={this.verifyInfo} style={styles.button}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </Button>
 
@@ -145,14 +155,10 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    fontWeight: '200',
-    fontSize: 18,
-  },
-  signUpButton: {
-    marginTop: 20,
   },
   buttonText: {
-    fontWeight: '200'
+    fontWeight: '200',
+    fontSize: 18,
   },
   signUpInput: {
     paddingTop: 10,

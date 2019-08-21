@@ -2,14 +2,17 @@ import React from 'react'
 
 import { 
   ScrollView, 
-  Text,
+  // Text,
   TouchableOpacity,
   StyleSheet,
  } from 'react-native'
 
 import { 
-  Card, 
+  Card,
+  Button, 
+  Text 
  } from 'native-base';
+
 
 
 export default function LearnView(props) {
@@ -21,8 +24,19 @@ export default function LearnView(props) {
     props.navigation.navigate('Learn', {learn_id: id})
   }
 
+  const determineButton = (learnId) => {
+    let completedLearns = navigation.getParam('completedLearns');
+    completedLearns.forEach((cLearn) => {
+      if (cLearn.learn_id === learnId) {
+        console.log("fuck")
+      }
+    })
+    
+  }
+
   const generateLearnCards = () => {
     return learns.map((learn, idx) => {
+      console.log(learn)
       return <TouchableOpacity key={idx} 
                                onPress={() => naviagteToLearn(learn.id)} 
                                activeOpacity={0.6}
@@ -30,10 +44,34 @@ export default function LearnView(props) {
                <Card style={styles.card}>
                  <Text style={styles.cardHeader}>{learn.learn_title}</Text>
                  {/* <Text>{learn.learn_description}</Text> */}
+                 <Button onPress={() => {learnTopic(learn.id, learn.structure_id)}}><Text>Learn</Text></Button>
+                 {determineButton(learn.id)}
                </Card>
              </TouchableOpacity>
              
     })
+  }
+
+  const learnTopic = (learnId, structureId) => {
+    let userToken = navigation.getParam('userToken')
+    let url = "http://localhost:3000/completelearn"
+    let configObj = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userToken}`
+      },
+      body: JSON.stringify({
+        info: {
+          learn_id: learnId, 
+          structure_id: structureId
+        }
+      })
+    }
+
+    fetch(url, configObj)
+    .then(resp => resp.json())
+    .then(json => console.log(json))
   }
 
   
@@ -60,6 +98,12 @@ const styles = StyleSheet.create({
     fontWeight: '300',
     textAlign: 'center', 
     fontSize: 25
+  },
+  learnButton: {
+
+  }, 
+  forgetButton: {
+
   }
 })
 

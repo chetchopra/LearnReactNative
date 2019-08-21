@@ -16,8 +16,8 @@ import {
 
 
 
+
 export default class CategoryView extends Component {
-  
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('screenTitle', 'Structure Screen'),
@@ -29,21 +29,26 @@ export default class CategoryView extends Component {
   }};
 
   determineNavigation = (content, sectionTitle) => {
-    let { navigation } = this.props
+    let userToken = this.props.navigation.getParam('userToken')
+    let structureCompletion = this.props.navigation.getParam('structureCompletion');
+    let completedLearns = structureCompletion.learns.completed;
+    let completedQuestions = structureCompletion.questions.completed;
+    let completedWhiteboards = structureCompletion.whiteboards.completed;
+
     switch(sectionTitle) {
       case "Learn":
-        return navigation.navigate('LearnView', {learns: content})
+        return this.props.navigation.navigate('LearnView', {learns: content, userToken: userToken, completedLearns: completedLearns})
       case "Questions":
-        return navigation.navigate('QuestionView', {questions: content})
+        return navigation.navigate('QuestionView', {questions: content, userToken: userToken, completedQuestions: completedQuestions})
       case "Whiteboarding":
-        return navigation.navigate('WhiteboardView', {whiteboards: content})
+        return navigation.navigate('WhiteboardView', {whiteboards: content, userToken: userToken, completedWhiteboards: completedWhiteboards})
     }
   }
 
 
   generateCards = () => {
-    let { navigation } = this.props
-    let sections = navigation.getParam('sections', 'Default-Title')
+    console.log(this.props.navigation.getParam('structureCompletion'))
+    let sections = this.props.navigation.getParam('sections', 'Default-Title')
     return Object.keys(sections).map((section) => {
       if (sections[section] && sections[section].length > 0) {
         return <TouchableOpacity key={section} onPress={() => {this.determineNavigation(sections[section], section)}}

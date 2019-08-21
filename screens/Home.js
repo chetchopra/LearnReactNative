@@ -39,6 +39,8 @@ export default class Home extends Component {
   
 
   navigateToCategoryView = (structure) => {
+    let structureCompletion = this.state.userCompletion[`${structure.structure.structure_name}`]
+    // console.log(structure)
     this.props.navigation.navigate('CategoryView', 
       {
         sections: {
@@ -46,7 +48,9 @@ export default class Home extends Component {
           Questions: structure.questions,
           Whiteboarding: structure.whiteboards
         },
-      screenTitle: structure.structure.structure_name
+        userToken: this.state.usertoken,
+        structureCompletion: structureCompletion,
+        screenTitle: structure.structure.structure_name
       })
   }
 

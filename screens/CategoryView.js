@@ -113,30 +113,40 @@ export default class CategoryView extends Component {
     let newSections = this.state.sections
     newSections["Learn"].completed++
     this.setState({sections: newSections})
+
+    this.props.navigation.getParam('increaseCompletedLearns')(this.state.currentStructureId)
   }
 
   decreaseCompletedLearns = () => {
     let newSections = this.state.sections
     newSections["Learn"].completed--
     this.setState({sections: newSections})
+
+    this.props.navigation.getParam('decreaseCompletedLearns')(this.state.currentStructureId)
   }
 
   increaseCompletedWhiteboards = () => {
     let newSections = this.state.sections
     newSections["Whiteboarding"].completed++
     this.setState({sections: newSections})
+
+    this.props.navigation.getParam('increaseCompletedWhiteboards')(this.state.currentStructureId)
   }
 
   decreaseCompletedWhiteboards = () => {
     let newSections = this.state.sections
     newSections["Whiteboarding"].completed--
     this.setState({sections: newSections})
+
+    this.props.navigation.getParam('decreaseCompletedWhiteboards')(this.state.currentStructureId)
   }
 
   increaseCompletedQuestions = () => {
     let newSections = this.state.sections
     newSections["Questions"].completed++
     this.setState({sections: newSections})
+
+    this.props.navigation.getParam('increaseCompletedQuestions')(this.state.currentStructureId)
   }
 
 
@@ -155,7 +165,7 @@ export default class CategoryView extends Component {
                   <Image source={{uri: "http://icons.iconarchive.com/icons/graphicloads/colorful-long-shadow/128/Bulb-icon.png"}} 
                   style={{margin: 'auto', height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}/>
 
-                  <Text>{this.determineSectionProgress(section)}</Text>
+                  <Text style={styles.completionText}>{this.determineSectionProgress(section)}</Text>
 
                 </Card>
                 
@@ -176,20 +186,27 @@ export default class CategoryView extends Component {
 const styles = {
   cardContainer: {
     marginLeft: '2%',
-    marginRight: '2%'
+    marginRight: '2%',
+    marginBottom: '2%', 
   },
   card: {
     borderRadius: 5, 
     height: 100, 
     backgroundColor: '#C09F80',
     justifyContent: 'center',
+    borderColor: '#76323F',
   },
   cardHeader: {
     fontWeight: '300',
     textAlign: 'center', 
     // paddingTop: '2%', 
     fontSize: 25
-  }
+  },
+  completionText: {
+    marginTop: '2%',
+    fontWeight: '200',
+    textAlign: 'center',
+  },
 }
 
 

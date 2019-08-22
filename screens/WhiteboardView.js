@@ -11,7 +11,8 @@ import {
 import { 
   Card,
   Button, 
-  Text 
+  Text,
+  Icon, 
  } from 'native-base';
 
  import AsyncStorage from '@react-native-community/async-storage'
@@ -29,6 +30,16 @@ export default class WhiteboardView extends Component {
       currentStructureId: null,
     }
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Whiteboarding',
+      headerRight: (
+        <Button transparent onPress={navigation.openDrawer}>
+          <Icon style={{color: 'black'}} name='cog'/>
+        </Button>
+    ),
+  }};
 
   getTokenAndStructure = () => {
     AsyncStorage.multiGet(["token", "currentStructure"])

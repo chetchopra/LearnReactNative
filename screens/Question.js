@@ -153,7 +153,7 @@ export default class Question extends Component{
   moveRight = () => {
     this.props.navigation.push('Question', {questionIndex: this.state.questionIndex + 1, 
                                             questionIds: this.state.questionIds, 
-                                            updateCompletionStatus: this.props.updateCompletionStatus})
+                                            updateCompletionStatus: this.props.navigation.getParam('updateCompletionStatus') })
   }
 
   moveLeft = () => {

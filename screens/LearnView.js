@@ -11,7 +11,8 @@ import {
 import { 
   Card,
   Button, 
-  Text 
+  Text,
+  Icon 
  } from 'native-base';
 
  import AsyncStorage from '@react-native-community/async-storage'
@@ -29,6 +30,16 @@ export default class LearnView extends Component {
       currentStructureId: null,
     }
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Learn',
+      headerRight: (
+        <Button transparent onPress={navigation.openDrawer}>
+          <Icon style={{color: 'black'}} name='cog'/>
+        </Button>
+    ),
+  }};
 
   getTokenAndStructure = () => {
     AsyncStorage.multiGet(["token", "currentStructure"])
@@ -191,7 +202,7 @@ const styles = StyleSheet.create({
     marginRight: '2%',
     borderRadius: 5,
     height: 100,
-    marginBottom: '2%' 
+    marginBottom: '3%' 
   },
   card: {
     height: '100%', 
@@ -213,7 +224,8 @@ const styles = StyleSheet.create({
   forgetButton: {
     marginRight: 'auto',
     marginTop: 'auto',
-  }
+  },
+
 })
 
 

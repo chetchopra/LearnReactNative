@@ -9,6 +9,8 @@ import {
 
 import { 
   Card, 
+  Button,
+  Icon,
  } from 'native-base'
 
 import AsyncStorage from '@react-native-community/async-storage'
@@ -26,6 +28,16 @@ export default class QuestionView extends Component {
       currentStructureId: null,
     }
   }
+
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Questions',
+      headerRight: (
+        <Button transparent onPress={navigation.openDrawer}>
+          <Icon style={{color: 'black'}} name='cog'/>
+        </Button>
+    ),
+  }};
 
   getTokenAndStructure = () => {
     AsyncStorage.multiGet(["token", "currentStructure"])

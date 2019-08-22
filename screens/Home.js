@@ -51,7 +51,13 @@ export default class Home extends Component {
     console.log(structure)
     this.props.navigation.navigate('CategoryView', 
       {
-        screenTitle: structure.structure_name
+        screenTitle: structure.structure_name,
+        increaseCompletedLearns: this.increaseCompletedLearns,
+        decreaseCompletedLearns: this.decreaseCompletedLearns,
+        increaseCompletedWhiteboards: this.increaseCompletedWhiteboards,
+        decreaseCompletedWhiteboards: this.decreaseCompletedWhiteboards,
+        increaseCompletedQuestions: this.increaseCompletedQuestions
+
       })
   }
 
@@ -63,9 +69,40 @@ export default class Home extends Component {
       // Error saving data
     }
   }
+
+  increaseCompletedLearns = (structureId) => {
+    let newStructures = this.state.structures;
+    newStructures[structureId - 1].completion["Learn"].completed++;
+    this.setState({structures: newStructures})
+  }
+
+  decreaseCompletedLearns = (structureId) => {
+    let newStructures = this.state.structures;
+    newStructures[structureId - 1].completion["Learn"].completed--;
+    this.setState({structures: newStructures})
+  }
+
+  increaseCompletedWhiteboards = (structureId) => {
+    let newStructures = this.state.structures;
+    newStructures[structureId - 1].completion["Whiteboarding"].completed++;
+    this.setState({structures: newStructures})
+  }
+
+  decreaseCompletedWhiteboards = (structureId) => {
+    let newStructures = this.state.structures;
+    newStructures[structureId - 1].completion["Whiteboarding"].completed--;
+    this.setState({structures: newStructures})
+  }
+
+  increaseCompletedQuestions = (structureId) => {
+    let newStructures = this.state.structures;
+    newStructures[structureId - 1].completion["Questions"].completed++;
+    this.setState({structures: newStructures})
+  }
   
 
   generateDataStructureCards = () => {  
+    console.log(this.state.structures)
     return this.state.structures.map((structure, idx) => {
       console.log(structure)
       return (
@@ -78,7 +115,7 @@ export default class Home extends Component {
           <Text style={styles.cardText}>{structure.structure_description}</Text>
           <Image source={{uri: structure.structure_image}} 
           style={{height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: '2%'}}/>
-          <Text>{this.calculateCompleted(structure)}</Text>
+          <Text style={styles.completionText}>{this.calculateCompleted(structure)}</Text>
         </Card>
         </TouchableOpacity>
       ) 
@@ -171,6 +208,11 @@ const styles = {
     fontWeight: '200',
     fontSize: 14,
     textAlign: 'center', 
+  },
+  completionText: {
+    marginTop: '2%',
+    fontWeight: '200',
+    textAlign: 'center',
   }
 }
 

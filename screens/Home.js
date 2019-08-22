@@ -21,6 +21,7 @@ import {
 export default class Home extends Component {
   constructor(props) {
     super();
+    console.disableYellowBox = true;
     this.state = {
       structures: [],
       userToken: null,

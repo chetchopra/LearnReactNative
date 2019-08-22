@@ -4,12 +4,14 @@ import AppNavigation from './AppNavigation'
 
 
 import Settings from '../screens/Settings'
+import About from '../screens/About'
 
 
 const DrawerNavigator = createDrawerNavigator(
   {
     Home: AppNavigation,
     Settings: Settings,
+    About: About
   },
   {
     hideStatusBar: true,

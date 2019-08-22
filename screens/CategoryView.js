@@ -92,7 +92,8 @@ export default class CategoryView extends Component {
       case "Questions":
         return this.props.navigation.navigate('QuestionView', {increaseCompletedQuestions: this.increaseCompletedQuestions})
       case "Whiteboarding":
-        return this.props.navigation.navigate('WhiteboardView', {})
+        return this.props.navigation.navigate('WhiteboardView', {increaseCompletedWhiteboards: this.increaseCompletedWhiteboards,
+                                                                 decreaseCompletedWhiteboards: this.decreaseCompletedWhiteboards,})
     }
   }
 
@@ -117,6 +118,18 @@ export default class CategoryView extends Component {
   decreaseCompletedLearns = () => {
     let newSections = this.state.sections
     newSections["Learn"].completed--
+    this.setState({sections: newSections})
+  }
+
+  increaseCompletedWhiteboards = () => {
+    let newSections = this.state.sections
+    newSections["Whiteboarding"].completed++
+    this.setState({sections: newSections})
+  }
+
+  decreaseCompletedWhiteboards = () => {
+    let newSections = this.state.sections
+    newSections["Whiteboarding"].completed--
     this.setState({sections: newSections})
   }
 

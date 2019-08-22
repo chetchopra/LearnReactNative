@@ -66,15 +66,15 @@ export default class LearnView extends Component {
     this.props.navigation.navigate('Learn', {learn_id: id})
   }
 
-  isLearned = (learnId) => {
-    let result = false
-    this.state.completedLearns.forEach((cLearn) => {
-      if (cLearn.learn_id === learnId) {
-        result = true
-      } 
-    })
-    return result
-  }
+  // isLearned = (learnId) => {
+  //   let result = false
+  //   this.state.completedLearns.forEach((cLearn) => {
+  //     if (cLearn.learn_id === learnId) {
+  //       result = true
+  //     } 
+  //   })
+  //   return result
+  // }
 
   generateLearnCards = () => {
     return this.state.learns.map((learn, idx) => {

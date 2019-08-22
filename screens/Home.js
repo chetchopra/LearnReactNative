@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+import AsyncStorage from '@react-native-community/async-storage'
+
 import {
   ScrollView,
   Text,
@@ -21,9 +23,7 @@ export default class Home extends Component {
     super();
     this.state = {
       structures: [],
-      usertoken: props.navigation.getParam('token'),
-      userInfo: null,
-      userCompletion: props.navigation.getParam('progress'),
+      userToken: null,
     }
   }
 
@@ -36,34 +36,47 @@ export default class Home extends Component {
       </Button>
     ),
   }};
+
+  getToken = () => {
+    
+    AsyncStorage.getItem("token")
+    .then(resp => {
+      this.setState({userToken: resp});
+      this.fetchStructures();
+    })
+  }
   
 
   navigateToCategoryView = (structure) => {
-    let structureCompletion = this.state.userCompletion[`${structure.structure.structure_name}`]
-    // console.log(structure)
+    console.log(structure)
     this.props.navigation.navigate('CategoryView', 
       {
-        sections: {
-          Learn: structure.learns,
-          Questions: structure.questions,
-          Whiteboarding: structure.whiteboards
-        },
-        userToken: this.state.usertoken,
-        structureCompletion: structureCompletion,
-        screenTitle: structure.structure.structure_name
+        screenTitle: structure.structure_name
       })
   }
 
+  saveCurrentStucture = async (structure) => {
+    try {
+      await AsyncStorage.setItem('currentStructure', structure.structure_id);
+      this.navigateToCategoryView(structure);
+    } catch (error) {
+      // Error saving data
+    }
+  }
+  
+
   generateDataStructureCards = () => {  
     return this.state.structures.map((structure, idx) => {
+      console.log(structure)
       return (
-        <TouchableOpacity key={idx} onPress={() => {this.navigateToCategoryView(structure)}}
+        <TouchableOpacity key={idx} onPress={() => {this.saveCurrentStucture(structure)}}
           activeOpacity={0.6}
           style={styles.cardContainer}>
+
         <Card style={styles.card}>
-          <Text style={styles.cardHeader}>{structure.structure.structure_name}</Text>
-          <Text style={styles.cardText}>{structure.structure.structure_description}</Text>
-          <Image source={{uri: structure.structure.structure_image}} 
+          <Text style={styles.cardHeader}>{structure.structure_name}</Text>
+          <Text style={styles.cardText}>{structure.structure_description}</Text>
+          <Image source={{uri: structure.structure_image}} 
           style={{height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: '2%'}}/>
           <Text>{this.calculateCompleted(structure)}</Text>
         </Card>
@@ -73,48 +86,57 @@ export default class Home extends Component {
   }
 
   calculateCompleted = (structure) => {
-    console.log(this.state.userCompletion)
-    if (this.state.userCompletion) {
-      let completedLearns = this.state.userCompletion[`${structure.structure.structure_name}`].learns.completed.length;
-      let totalLearns = structure.learns.length
-      let completedQuestions = this.state.userCompletion[`${structure.structure.structure_name}`].questions.completed.length;
-      let totalQuestions = structure.questions.length
-      let completedWhiteboards = this.state.userCompletion[`${structure.structure.structure_name}`].whiteboards.completed.length;
-      let totalWhiteboards = structure.whiteboards.length
-      return `Learns: ${completedLearns} out of ${totalLearns} | Questions: ${completedQuestions} out of ${totalQuestions} | Whiteboards: ${completedWhiteboards} out of ${totalWhiteboards}`
-      // return (this.state.userCompletion[`${structure.structure_name}`].learns.completed.length) / (this.state.userCompletion[`${structure.structure_name}`].learns.total)
-    }
-    return "not here yet"
+    // console.log(structure)
+    return `Learn: ${structure.completion["Learn"].completed} / ${structure.completion["Learn"].total} | Questions: ${structure.completion["Questions"].completed} / ${structure.completion["Questions"].total} | Whiteboarding: ${structure.completion["Whiteboarding"].completed} / ${structure.completion["Whiteboarding"].total}`
+
+    // console.log(this.state.userCompletion)
+    // if (this.state.userCompletion) {
+    //   let completedLearns = this.state.userCompletion[`${structure.structure.structure_name}`].learns.completed.length;
+    //   let totalLearns = this.state.userCompletion[`${structure.structure.structure_name}`].learns.total;
+    //   let completedQuestions = this.state.userCompletion[`${structure.structure.structure_name}`].questions.completed.length;
+    //   let totalQuestions = this.state.userCompletion[`${structure.structure.structure_name}`].questions.total
+    //   let completedWhiteboards = this.state.userCompletion[`${structure.structure.structure_name}`].whiteboards.completed.length;
+    //   let totalWhiteboards = this.state.userCompletion[`${structure.structure.structure_name}`].whiteboards.total
+    //   return `Learns: ${completedLearns} out of ${totalLearns} | Questions: ${completedQuestions} out of ${totalQuestions} | Whiteboards: ${completedWhiteboards} out of ${totalWhiteboards}`
+    //   // return (this.state.userCompletion[`${structure.structure_name}`].learns.completed.length) / (this.state.userCompletion[`${structure.structure_name}`].learns.total)
+    // }
+    // return "not here yet"
   }
 
   componentDidMount() {
-    this.fetchStructures();
-    // this.fetchUser();
+    this.getToken();
+    // this.fetchStructures();
   }
 
-  // fetchUser = () => {
-  //   let url = "http://localhost:3000/profile"
-  //   let configObj = {
-  //     method: 'GET',
-  //     headers: {
-  //       Authorization: `Bearer ${this.state.usertoken}`
-  //     }
-  //   }
-
-  //   fetch(url, configObj)
+  // fetchStructures = () => {
+  //   let url = "http://localhost:3000/structures"
+  //   fetch(url)
   //   .then(resp => resp.json())
-  //   .then(json => {this.setState({userInfo: json.user.userInfo, userCompletion: json.user.completion})})
+  //   .then(json => {
+  //     this.setState({structures: json})
+  //     console.log(json)
+  //   })
   // }
 
   fetchStructures = () => {
     let url = "http://localhost:3000/structures"
-    fetch(url)
+    let configObj = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.state.userToken}`
+      }
+    }
+
+    fetch(url, configObj)
     .then(resp => resp.json())
-    .then(json => this.setState({structures: json}))
+    .then(json => {
+      this.setState({structures: json})
+      console.log(json)
+    })
   }
 
   render() {
-    console.log(this.state.userCompletion)
     return (
       
       <ScrollView style={{backgroundColor: '#565656'}}>

@@ -13,7 +13,10 @@ import {
   Container,
   Button
 } from 'native-base'
+
 import { colors } from 'react-native-elements';
+
+import AsyncStorage from '@react-native-community/async-storage'
 
          
 
@@ -21,6 +24,7 @@ export default class Question extends Component{
   constructor(props) {
     super();
     this.state = {
+      userToken: null,
       question_query: "",
       question_answer_bank: "",
       question_solution: "",
@@ -28,6 +32,8 @@ export default class Question extends Component{
       isSubmitted: false,
       questionIds: props.navigation.getParam('questionIds'),
       questionIndex: props.navigation.getParam('questionIndex'),
+      isComplete: false,
+      currentStructureId: null
     }
   }
 
@@ -37,6 +43,24 @@ export default class Question extends Component{
    }
   }
 
+  // getToken = () => {
+  //   AsyncStorage.getItem("token")
+  //   .then(resp => {
+  //     this.setState({userToken: resp})
+  //     this.fetchQuesionContent();
+  //     // this.setState({userToken: resp[0][1], currentStructureId: resp[1][1]});
+  //     // this.fetchQuestionDetails();
+  //   })
+  // }
+
+  getTokenAndStructure = () => {
+    AsyncStorage.multiGet(["token", "currentStructure"])
+    .then(resp => {
+      this.setState({userToken: resp[0][1], currentStructureId: resp[1][1]});
+      this.fetchQuesionContent();
+    })
+  }
+
   fetchQuesionContent = () => {
     const id = this.state.questionIds[this.state.questionIndex]
 
@@ -44,19 +68,69 @@ export default class Question extends Component{
     console.log(this.state.questionIndex)
 
     let url = `http://localhost:3000/questions/${id}`
-    fetch(url)
+    let configObj = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.state.userToken}`
+      }
+    }
+    fetch(url, configObj)
     .then(resp => resp.json())
-    .then(json => {this.setState({
+    .then(json => {console.log(json);this.setState({
+      
       question_query: json.question_query,
       question_answer_bank: JSON.parse(json.question_answer_bank),
-      question_solution: json.question_solution})
-      console.log(this.state)
+      question_solution: json.question_solution,
+      isComplete: json.isComplete
+    })
+      if (json.isComplete) {
+        this.markCompleted()
+      }
     }
     )
   }
 
+  markCompleted = () => {
+    
+    if (this.state.isComplete) {
+      this.setState({currentGuess: this.state.question_solution, isSubmitted: true})
+    }
+  }
+
+  completeQuestion = () => {
+    // console.log("complete q was called")
+    const questionId = this.state.questionIds[this.state.questionIndex]
+
+    let url = "http://localhost:3000/completequestion"
+    let configObj = {
+      method: 'POST',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.state.userToken}`
+      },
+      body: JSON.stringify({
+        info: {
+          question_id: questionId, 
+          structure_id: this.state.currentStructureId
+        }
+      })
+    }
+
+    fetch(url, configObj)
+    .then(resp => resp.json())
+    .then(json => {
+      this.setState({isComplete: true})
+      let questionId = this.state.questionIds[this.state.questionIndex]
+      let update = this.props.navigation.getParam('updateCompletionStatus') 
+      update(questionId);
+      this.markCompleted();
+    })
+  }
+
   componentDidMount() {
-    this.fetchQuesionContent();
+    this.getTokenAndStructure()
+    // this.fetchQuesionContent();
   }
 
   updateCurrentGuess = (guess) => {
@@ -64,9 +138,9 @@ export default class Question extends Component{
                   isSubmitted: false})
   }
 
-  naviagteToQuestion = () => {
-    this.props.navigation.push('Question', {question_id: 2})
-  }
+  // naviagteToQuestion = () => {
+  //   this.props.navigation.push('Question', {question_id: 2, updateCompletionStatus: this.props.updateCompletionStatus})
+  // }
 
   canMoveRight = () => {
     return (this.state.questionIds.length - 1 > this.state.questionIndex)
@@ -77,12 +151,15 @@ export default class Question extends Component{
   }
 
   moveRight = () => {
-    this.props.navigation.push('Question', {questionIndex: this.state.questionIndex + 1, questionIds: this.state.questionIds})
+    this.props.navigation.push('Question', {questionIndex: this.state.questionIndex + 1, 
+                                            questionIds: this.state.questionIds, 
+                                            updateCompletionStatus: this.props.updateCompletionStatus})
   }
 
   moveLeft = () => {
     
     // this.props.navigation.push('Question', {questionIndex: this.state.questionIndex - 1, questionIds: this.state.questionIds})
+    // UPDATE NEEDS TO GO BACK WITH IT 
     this.props.navigation.goBack();
   }
 
@@ -108,6 +185,13 @@ export default class Question extends Component{
 
   submitAnswer = () => {
     this.setState({isSubmitted: true})
+    // console.log(this.state)
+    // console.log(this.state.currentGuess === this.state.question_solution && !this.state.isCompleted)
+    if (this.state.currentGuess === this.state.question_solution && !this.state.isComplete) {
+      this.completeQuestion()
+    } else {
+      //alert("youre a failure")
+    }
   }
 
 
@@ -116,6 +200,8 @@ export default class Question extends Component{
       <View style={styles.view}>
 
         <Container style={styles.outerContainer}>
+
+          <Text>{this.state.isComplete ? "Completed" : null}</Text>
 
           <Container style={styles.questionContainer}>
             <Text style={styles.questionText}>{this.state.question_query}</Text>

@@ -13,11 +13,67 @@ import {
   Icon
 } from 'native-base';
 
+import AsyncStorage from '@react-native-community/async-storage'
+
 
 
 
 
 export default class CategoryView extends Component {
+  constructor(props) {
+    super()
+    this.state = {
+      // completedLearns: props.navigation.getParam('structureCompletion').learns,
+      // completedQuestions: props.navigation.getParam('structureCompletion').questions,
+      // completedWhiteboards: props.navigation.getParam('structureCompletion').whiteboards,
+      userToken: null,
+      sections: {},
+      currentStructureId: null,
+    }
+  }
+
+  getTokenAndStructure = () => {
+    AsyncStorage.multiGet(["token", "currentStructure"])
+    .then(resp => {
+      this.setState({userToken: resp[0][1], currentStructureId: resp[1][1]});
+      this.fetchSectionDetails();
+    })
+  }
+
+  componentDidMount() {
+    this.getTokenAndStructure();
+    // this.getCurrentStucture();
+  }
+
+  // getCurrentStucture = async () => {
+  //   const currentStructure = await AsyncStorage.getItem('currentStructure');
+
+  //   if (currentStructure) {
+  //     console.log(currentStructure)
+  //   } else {
+  //     // this.props.navigation.navigate('Auth')
+  //   }
+  // }
+
+  fetchSectionDetails = () => {
+    let url = `http://localhost:3000/sectiondetails/${this.state.currentStructureId}`
+    let configObj = {
+      method: 'GET',
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${this.state.userToken}`
+      }
+    }
+
+    fetch(url, configObj)
+    .then(resp => resp.json())
+    .then(json => {
+      this.setState({sections: json})
+      console.log(json)
+    })
+  }
+
+
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('screenTitle', 'Structure Screen'),
@@ -28,30 +84,56 @@ export default class CategoryView extends Component {
     ),
   }};
 
-  determineNavigation = (content, sectionTitle) => {
-    let userToken = this.props.navigation.getParam('userToken')
-    let structureCompletion = this.props.navigation.getParam('structureCompletion');
-    let completedLearns = structureCompletion.learns.completed;
-    let completedQuestions = structureCompletion.questions.completed;
-    let completedWhiteboards = structureCompletion.whiteboards.completed;
-
+  determineNavigation = (sectionTitle) => {
     switch(sectionTitle) {
       case "Learn":
-        return this.props.navigation.navigate('LearnView', {learns: content, userToken: userToken, completedLearns: completedLearns})
+        return this.props.navigation.navigate('LearnView', {increaseCompletedLearns: this.increaseCompletedLearns,
+                                                            decreaseCompletedLearns: this.decreaseCompletedLearns,})
       case "Questions":
-        return navigation.navigate('QuestionView', {questions: content, userToken: userToken, completedQuestions: completedQuestions})
+        return this.props.navigation.navigate('QuestionView', {increaseCompletedQuestions: this.increaseCompletedQuestions})
       case "Whiteboarding":
-        return navigation.navigate('WhiteboardView', {whiteboards: content, userToken: userToken, completedWhiteboards: completedWhiteboards})
+        return this.props.navigation.navigate('WhiteboardView', {})
     }
   }
 
+  determineSectionProgress = (sectionTitle) => {
+    return `${this.state.sections[`${sectionTitle}`].completed} / ${this.state.sections[`${sectionTitle}`].total}`
+    // switch(sectionTitle) {
+    //   case "Learn":
+    //     return `${this.state.sections["Learn"].completed} / ${this.state.sections["Learn"].total}`
+    //   case "Questions":
+    //     return `${this.state.sections["Questions"].completed} / ${this.state.sections["Questions"].total}`
+    //   case "Whiteboarding":
+    //     return `${this.state.sections["Whiteboarding"].completed} / ${this.state.sections["Whiteboarding"].total}`
+    // }
+  }
+
+  increaseCompletedLearns = () => {
+    let newSections = this.state.sections
+    newSections["Learn"].completed++
+    this.setState({sections: newSections})
+  }
+
+  decreaseCompletedLearns = () => {
+    let newSections = this.state.sections
+    newSections["Learn"].completed--
+    this.setState({sections: newSections})
+  }
+
+  increaseCompletedQuestions = () => {
+    let newSections = this.state.sections
+    newSections["Questions"].completed++
+    this.setState({sections: newSections})
+  }
+
+
+
 
   generateCards = () => {
-    console.log(this.props.navigation.getParam('structureCompletion'))
-    let sections = this.props.navigation.getParam('sections', 'Default-Title')
+    let sections = this.state.sections
     return Object.keys(sections).map((section) => {
-      if (sections[section] && sections[section].length > 0) {
-        return <TouchableOpacity key={section} onPress={() => {this.determineNavigation(sections[section], section)}}
+      if (sections[section] && (sections[section].total > 0)) {
+        return <TouchableOpacity key={section} onPress={() => {this.determineNavigation(section)}}
                   activeOpacity={0.6}
                   style={styles.cardContainer}
                   >
@@ -59,7 +141,11 @@ export default class CategoryView extends Component {
                   <Text style={styles.cardHeader}>{section}</Text>
                   <Image source={{uri: "http://icons.iconarchive.com/icons/graphicloads/colorful-long-shadow/128/Bulb-icon.png"}} 
                   style={{margin: 'auto', height: 30, width: 30, marginLeft: 'auto', marginRight: 'auto', marginTop: 10}}/>
+
+                  <Text>{this.determineSectionProgress(section)}</Text>
+
                 </Card>
+                
                </TouchableOpacity>
       }
 

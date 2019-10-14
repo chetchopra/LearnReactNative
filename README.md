@@ -32,6 +32,7 @@ I'm currently working on a live demo but in the meantime you can checkout out a 
 5. You will need a backend to connect to. That can be found at https://github.com/chetchopra/LearnAPI
 
 ### Create an Account
+Sign in or make a new account
 
 ### Select a Data Structure
 

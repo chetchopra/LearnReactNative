@@ -21,7 +21,7 @@ I'm currently working on a live demo but in the meantime you can checkout out a 
 
 ## Usage 
 
-1. Clone or fork the repo
+1. Clone or fork the repository
 
 2. Run `npm install` to install all the needed dependencies to the node_modules folder
 
